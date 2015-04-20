@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <link href="./node_modules/backbone-tree-view/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="./node_modules/backbone-tree-view/css/bootstrap-theme.min.css" rel="stylesheet">
+    
+        <script src="./node_modules/backbone-tree-view/node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="./node_modules/backbone-tree-view/node_modules/underscore/underscore-min.js"></script>
+        <script src="./node_modules/backbone-tree-view/node_modules/backbone/backbone.js"></script>
+        <script src="./node_modules/backbone-tree-view/node_modules/backbone-tree-model/src/backbone.treemodel.js"></script>
+        <script src="./node_modules/backbone-tree-view/lib/backbone-tree-view.js"></script>
+        <script src="./data.js"></script>
+    
+        <title>Backbone-tree-view</title>
+        <style type="text/css">
+            #content {
+                padding: 0 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3" id="content">
+                    <div class="page-header">
+                        <h1>Backbone tree view</h1>
+                    </div>
+                    <p class="lead">
+                        Github repo: <a href="https://github.com/kirill-zhirnov/backbone-tree-view" target="_blank">kirill-zhirnov/backbone-tree-view</a>
+                    </p>
+                    <div class="page-header">
+                        <h2>Basic example</h2>
+                    </div>
+                    <div id="tree-basic"></div>
+                    <script type="text/javascript">
+                        var list = new BackTree.Tree({
+                            collection : data
+                        });
+                        $('#tree-basic').append(list.render().$el);
+                    </script>
+                    <div class="page-header">
+                        <h2>With Drag and Drop</h2>
+                    </div>
+                    <p>You can also drag left/right to change parent. (If parent is opened - drag to right. If it is last child - drag to left).</p>
+                    <br/>
+                    <div id="tree-dnd"></div>
+                    <script type="text/javascript">
+                        var list = new BackTree.Tree({
+                            collection : data,
+                            settings : {
+                                plugins : {
+                                    DnD : {}
+                                }
+                            }
+                        });
+                        $('#tree-dnd').append(list.render().$el);
+                    </script>
+                    <div class="page-header">
+                        <h2>Drag and Drop with sorting only</h2>
+                    </div>
+                    <br/>
+                    <div id="tree-sort"></div>
+                    <script type="text/javascript">
+                        var list = new BackTree.Tree({
+                            collection : data,
+                            settings : {
+                                plugins : {
+                                    DnD : {
+                                        changeParent : false
+                                    }
+                                }
+                            }
+                        });
+                        $('#tree-sort').append(list.render().$el);
+                    </script>
+                    <div class="page-header">
+                        <h2>Checkboxes and buttons</h2>
+                    </div>
+                    <div id="tree-buttons"></div>
+                    <script type="text/javascript">
+                        var ItemView = BackTree.Item.extend({
+                            events : function() {
+                                var events = ItemView.__super__.events.apply(this, arguments);
+                                events['click > .wrapper .my-e'] = function(e) {
+                                    e.preventDefault();
+                                    alert('E clicked!');
+                                }
+
+                                events['click > .wrapper .my-x'] = function(e) {
+                                    e.preventDefault();
+                                    alert('X clicked!');
+                                }
+
+                                return events;
+                            },
+                            getRightPart : function() {
+                                var out = '<a href="#" class="btn btn-warning btn-xs my-e">E</a> ';
+                                out += '<a href="#" class="btn btn-danger btn-xs my-x">X</a>';
+
+                                return out;
+                            }
+                        });
+
+                        var list = new BackTree.Tree({
+                            collection : data,
+                            settings : {
+                                checkbox : true,
+                                ItemConstructor : ItemView
+                            }
+                        });
+                        $('#tree-buttons').append(list.render().$el);
+                    </script>
+                    <div class="page-header">
+                        <h2>How to install?</h2>
+                    </div>
+                    <p class="lead">
+                        Github repo: <a href="https://github.com/kirill-zhirnov/backbone-tree-view" target="_blank">kirill-zhirnov/backbone-tree-view</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
